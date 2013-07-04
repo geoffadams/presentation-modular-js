@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <title>Modular JavaScript</title>
+
+    <meta name="author" content="Geoff Adams">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="reveal/css/reveal.min.css">
+    <link rel="stylesheet" href="reveal/css/theme/default.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="reveal/lib/css/zenburn.css">
+
+    <!--[if lt IE 9]>
+    <script src="reveal/lib/js/html5shiv.js"></script>
+    <![endif]-->
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            <section>
+                <h1>Modular JavaScript</h1>
+            </section>
+
+            <section>
+                <h2>Why modular?</h2>
+                <ul>
+                    <li class="fragment">Global scope nonsense</li>
+                    <li class="fragment">Spaghetti code</li>
+                    <li class="fragment">Reusable components</li>
+                    <li class="fragment">Just because.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>The Old Way&trade;</h2>
+            </section>
+
+            <section>
+                <h2>The Old Way&trade;</h2>
+                <p>Java-like namespacing</p>
+                <pre><code class="javascript" data-trim>
+Foo.Bar.Baz();
+                </code></pre>
+                <p class="fragment">What is an object, what is a function?</p>
+                <p class="fragment">More to the point, how did we even do this?</p>
+            </section>
+
+            <section>
+                <h2>An example</h2>
+                <pre><code class="javascript" data-trim>
+Foo.Bar.Baz = function() {
+    var jibby = 'jobby';
+    return {
+        getJibby: function() {
+            return jibby;
+        }
+    };
+};
+                </code></pre>
+                <p class="fragment">Awesome, we got us a module, let's just drop it in!</p>
+                <pre class="fragment"><code class="no-highlight" data-trim>
+ReferenceError: Foo is not defined
+                </code></pre>
+                <p class="fragment">Oh. Missed something out.</p>
+                <pre class="fragment"><code class="javascript" data-trim>
+if (typeof(Foo) === "undefined") {
+    Foo = {};
+}
+
+if (typeof(Foo.Bar) === "undefined") {
+    Foo.Bar = {};
+}
+                </code></pre>
+                <p class="fragment">This is going to get tedious...</p>
+            </section>
+
+            <section>
+                <h2>Other problems</h2>
+                <ul>
+                    <li>Traversing a hierarchy of objects returned from functions for every method call - slow!</li>
+                    <li class="fragment">Scoping gets hairy - injecting objects into Foo.Bar from outside Foo.Bar's own code!</li>
+                    <li class="fragment">
+                        <p>Ugly code:</p>
+                        <pre><code class="javascript">
+var baz = new Foo.Bar.Baz();
+var bazPlugin = new Foo.Bar.Baz.Plugin();
+                        </code></pre>
+                        <p>No way to 'import' these to make things cleaner.</p>
+                    </li>
+                    <li class="fragment">Leaves dependency management and inclusion unsolved.</li>
+                </ul>
+
+                <p class="fragment"><br>So what are we to do?</p>
+            </section>
+
+            <section>
+                <h2>The New Way&trade;</h2>
+            </section>
+        </div>
+    </div>
+
+    <script src="reveal/lib/js/head.min.js"></script>
+    <script src="reveal/js/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            history: true,
+            transition: "linear",
+            dependencies: [
+                { src: 'reveal/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+            ]
+        });
+    </script>
+</body>
+</html>
