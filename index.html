@@ -27,47 +27,50 @@
             </section>
 
             <section>
-                <h2>Why modular?</h2>
-                <ul>
-                    <li class="fragment">Global scope nonsense</li>
-                    <li class="fragment">Spaghetti code</li>
-                    <li class="fragment">Reusable components</li>
-                    <li class="fragment">Just because.</li>
-                </ul>
+                <h2>Why?</h2>
+                <p class="fragment">Reusable components</p>
+                <p class="fragment">Dependency management</p>
+                <p class="fragment">Asynchronous dependency loading</p>
+                <p class="fragment">Avoid polluting global scope (jQuery etc)</p>
             </section>
 
             <section>
-                <h2>The Old Way&trade;</h2>
+                <h2>The Old Boss&trade;</h2>
             </section>
 
             <section>
-                <h2>The Old Way&trade;</h2>
-                <p>Java-like namespacing</p>
+                <h2>Namespacing</h2>
+                <p>Java-like namespacing of modules:</p>
                 <pre><code class="javascript" data-trim>
 Foo.Bar.Baz();
                 </code></pre>
-                <p class="fragment">What is an object, what is a function?</p>
-                <p class="fragment">More to the point, how did we even do this?</p>
+                <p class="fragment">Mixed class/package metaphor</p>
+                <p class="fragment">Even more confusing when 'static' functions come into play</p>
+                <p class="fragment">JavaScript doesn't lend itself to this method very well</p>
             </section>
 
             <section>
-                <h2>An example</h2>
+                <h2>Namespacing: An example</h2>
                 <pre><code class="javascript" data-trim>
 Foo.Bar.Baz = function() {
-    var jibby = 'jobby';
+    var privateProperty = "foo";
     return {
-        getJibby: function() {
-            return jibby;
+        publicProperty: "bar",
+        publicMethod: function() {
+            return privateProperty;
         }
     };
 };
                 </code></pre>
-                <p class="fragment">Awesome, we got us a module, let's just drop it in!</p>
-                <pre class="fragment"><code class="no-highlight" data-trim>
+                <p>Awesome, we got us a module, let's drop it in!</p>
+                <div class="fragment">
+                    <pre><code class="no-highlight" data-trim>
 ReferenceError: Foo is not defined
-                </code></pre>
-                <p class="fragment">Oh. Missed something out.</p>
-                <pre class="fragment"><code class="javascript" data-trim>
+                    </code></pre>
+                    <p>Oops, missed something out...</p>
+                </div>
+                <div class="fragment">
+                    <pre><code class="javascript" data-trim>
 if (typeof(Foo) === "undefined") {
     Foo = {};
 }
@@ -75,12 +78,13 @@ if (typeof(Foo) === "undefined") {
 if (typeof(Foo.Bar) === "undefined") {
     Foo.Bar = {};
 }
-                </code></pre>
-                <p class="fragment">This is going to get tedious...</p>
+                    </code></pre>
+                    <p>This is going to get tedious...</p>
+                </div>
             </section>
 
             <section>
-                <h2>Other problems</h2>
+                <h2>Namespacing: Problems</h2>
                 <ul>
                     <li>Traversing a hierarchy of objects returned from functions for every method call - slow!</li>
                     <li class="fragment">Scoping gets hairy - injecting objects into Foo.Bar from outside Foo.Bar's own code!</li>
@@ -92,14 +96,138 @@ var bazPlugin = new Foo.Bar.Baz.Plugin();
                         </code></pre>
                         <p>No way to 'import' these to make things cleaner.</p>
                     </li>
-                    <li class="fragment">Leaves dependency management and inclusion unsolved.</li>
+                    <li class="fragment">Dependency management still an issue</li>
+                    <li class="fragment">Synchronous loading of modules with manual dependency ordering... not good!</li>
                 </ul>
-
-                <p class="fragment"><br>So what are we to do?</p>
             </section>
 
             <section>
-                <h2>The New Way&trade;</h2>
+                <h2>Loaders</h2>
+                <p>Why not manage our dependencies ourselves? Not too hard to specify a central dependency map, surely?</p>
+                <p class="fragment">BBC Glow, Dojo (pre 1.7), ExtJS do it!</p>
+                <p class="fragment">What happens when you want to mix libraries or frameworks?</p>
+                <p class="fragment">Worst case: a module which depends on Framework X and Library Y simultaneously</p>
+                <p class="fragment">Painful!</p>
+            </section>
+
+            <section>
+                <h2>The New Boss&trade;</h2>
+                <h3>Standards! (Yay!)</h3>
+                <p class="fragment">Don't get your hopes up...</p>
+            </section>
+
+            <section>
+                <h2>ECMAScript Harmony (6th Edition)</h2>
+                <p>Packages and classes!</p>
+                <p class="fragment">Troubled development history going back to 2007</p>
+                <p class="fragment">Microsoft + Google (evolution) vs Mozilla (revolution)</p>
+                <p class="fragment">Planned packaging and class features dropped</p>
+                <p class="fragment">Release planned for end of 2013, long time to wait for good browser support anyway</p>
+            </section>
+
+            <section>
+                <h2>CommonJS</h2>
+                <p>Actually a full 'standard library' for JavaScript</p>
+                <p class="fragment">CommonJS Modules defines packaging and dependency management</p>
+                <p class="fragment">Close to the original Harmony proposals</p>
+                <p class="fragment">More geared at server-side JS</p>
+                <p class="fragment">Doesn't provide out-of-the-box tools for use on the web</p>
+                <p class="fragment">Project is now dead</p>
+            </section>
+
+            <section>
+                <h2>AMD (Asynchronous Module Definition)</h2>
+                <p>Originally an interim proposal alongside CommonJS</p>
+                <p class="fragment">Defines packaging and dependency management</p>
+                <p class="fragment">define() and require() are the API - simple and semantic</p>
+                <p class="fragment">Numerous implementations exist: RequireJS, curl.js, Dojo 1.7+</p>
+                <p class="fragment">Alive and well!</p>
+            </section>
+
+            <section>
+                <h2>AMD: An Example</h2>
+                <p>First, we define our module</p>
+                <pre><code class="javascript" data-trim>
+define(
+    'project/module/submodule',
+    ['vendorA/dependency', 'vendorB/dependency'],
+    function(vendorADep, vendorBDep) {
+        ...
+
+        return {
+            ...
+        };
+    }
+);
+                </code></pre>
+                <div class="fragment">
+                    <p>Now let's use it</p>
+                    <pre><code class="javascript" data-trim>
+require(
+    'project/module/submodule',
+    function(submodule) {
+        ...
+    }
+);
+                    </code></pre>
+                </div>
+                <p class="fragment">
+                    Pretty straightforward so far...
+                </p>
+            </section>
+
+            <section>
+                <h2>AMD: Paths</h2>
+                <p>But where do we find those modules?</p>
+                <pre><code class="javascript" data-trim>
+require.config({
+    paths: [
+        "vendorA": "http://cdn.vendora.com/js",
+        ...
+    ]
+});
+                </code></pre>
+                <div class="fragment">
+                    <p>So our modules are located like this</p>
+                    <pre><code class="no-highlight">
+vendorA/moduleA       => http://cdn.vendora.com/js/moduleA.js
+vendorA/moduleB       => http://cdn.vendora.com/js/moduleB.js
+vendorA/moduleB/sub   => http://cdn.vendora.com/js/moduleB/sub.js
+                    </code></pre>
+                </div>
+            </section>
+
+            <section>
+                <h2>AMD: Globals</h2>
+                <p>What about our old browser-global scripts, such as jQuery?</p>
+                <pre><code class="javascript" data-trim>
+require.config({
+    shim: {
+        jquery: {
+            exports: "jQuery"
+        },
+        underscore: {
+            exports: "_"
+        },
+        backbone: {
+            deps: ["jquery", "underscore"],
+            exports: "Backbone"
+        }
+    }
+});
+                </code></pre>
+                <pre><code class="javascript" data-trim>
+require(["jquery"], function($) {
+    ...
+});
+                </code></pre>
+            </section>
+
+            <section>
+                <h2>RequireJS</h2>
+                <p>Simply an AMD loader</p>
+                <p class="fragment">Provides some compatibility with CommonJS-style modules</p>
+                <p class="fragment">The BBC's Chosen One</p>
             </section>
         </div>
     </div>
