@@ -24,9 +24,12 @@
         <div class="slides">
             <section>
                 <h1>Modular JavaScript</h1>
+                <h3>With your host, Geoff Adams</h3>
+                <p><a href="https://twitter.com/geoffadams">@geoffadams</a></p>
+                <p><a href="https://github.com/geoffadams">github.com/geoffadams</a></p>
             </section>
 
-            <section>
+            <section data-background="#6c71c4">
                 <h2>Why?</h2>
                 <p class="fragment">Reusable components</p>
                 <p class="fragment">Dependency management</p>
@@ -34,24 +37,25 @@
                 <p class="fragment">Avoid polluting global scope (jQuery etc)</p>
             </section>
 
-            <section>
+            <section data-background="#6c71c4">
                 <h2>The Old Boss&trade;</h2>
             </section>
 
             <section>
-                <h2>Namespacing</h2>
-                <p>Java-like namespacing of modules:</p>
-                <pre><code class="javascript" data-trim>
+                <section data-background="#6c71c4">
+                    <h2>Namespacing</h2>
+                    <p>Java-like namespacing of modules:</p>
+                    <pre><code class="javascript" data-trim>
 Foo.Bar.Baz();
-                </code></pre>
-                <p class="fragment">Mixed class/package metaphor</p>
-                <p class="fragment">Even more confusing when 'static' functions come into play</p>
-                <p class="fragment">JavaScript doesn't lend itself to this method very well</p>
-            </section>
+                    </code></pre>
+                    <p class="fragment">Mixed class/package metaphor</p>
+                    <p class="fragment">Even more confusing when 'static' functions come into play</p>
+                    <p class="fragment">JavaScript doesn't lend itself to this method very well</p>
+                </section>
 
-            <section>
-                <h2>Namespacing: An example</h2>
-                <pre><code class="javascript" data-trim>
+                <section data-background="#6c71c4">
+                    <h2>Namespacing: An example</h2>
+                    <pre><code class="javascript" data-trim>
 Foo.Bar.Baz = function() {
     var privateProperty = "foo";
     return {
@@ -61,16 +65,16 @@ Foo.Bar.Baz = function() {
         }
     };
 };
-                </code></pre>
-                <p>Awesome, we got us a module, let's drop it in!</p>
-                <div class="fragment">
-                    <pre><code class="no-highlight" data-trim>
-ReferenceError: Foo is not defined
                     </code></pre>
-                    <p>Oops, missed something out...</p>
-                </div>
-                <div class="fragment">
-                    <pre><code class="javascript" data-trim>
+                    <p>Awesome, we got us a module, let's drop it in!</p>
+                    <div class="fragment">
+                        <pre><code class="no-highlight" data-trim>
+ReferenceError: Foo is not defined
+                        </code></pre>
+                        <p>Oops, missed something out...</p>
+                    </div>
+                    <div class="fragment">
+                        <pre><code class="javascript" data-trim>
 if (typeof(Foo) === "undefined") {
     Foo = {};
 }
@@ -78,45 +82,46 @@ if (typeof(Foo) === "undefined") {
 if (typeof(Foo.Bar) === "undefined") {
     Foo.Bar = {};
 }
-                    </code></pre>
-                    <p>This is going to get tedious...</p>
-                </div>
-            </section>
+                        </code></pre>
+                        <p>This is going to get tedious...</p>
+                    </div>
+                </section>
 
-            <section>
-                <h2>Namespacing: Problems</h2>
-                <ul>
-                    <li>Traversing a hierarchy of objects returned from functions for every method call - slow!</li>
-                    <li class="fragment">Scoping gets hairy - injecting objects into Foo.Bar from outside Foo.Bar's own code!</li>
-                    <li class="fragment">
-                        <p>Ugly code:</p>
-                        <pre><code class="javascript">
+                <section data-background="#6c71c4">
+                    <h2>Namespacing: Problems</h2>
+                    <ul>
+                        <li>Traversing a hierarchy of objects returned from functions for every method call - slow!</li>
+                        <li class="fragment">Scoping gets hairy - injecting objects into Foo.Bar from outside Foo.Bar's own code!</li>
+                        <li class="fragment">
+                            <p>Ugly code:</p>
+                            <pre><code class="javascript">
 var baz = new Foo.Bar.Baz();
 var bazPlugin = new Foo.Bar.Baz.Plugin();
-                        </code></pre>
-                        <p>No way to 'import' these to make things cleaner.</p>
-                    </li>
-                    <li class="fragment">Dependency management still an issue</li>
-                    <li class="fragment">Synchronous loading of modules with manual dependency ordering... not good!</li>
-                </ul>
+                            </code></pre>
+                            <p>No way to 'import' these to make things cleaner.</p>
+                        </li>
+                        <li class="fragment">Dependency management still an issue</li>
+                        <li class="fragment">Synchronous loading of modules with manual dependency ordering... not good!</li>
+                    </ul>
+                </section>
             </section>
 
-            <section>
+            <section data-background="#6c71c4">
                 <h2>Loaders</h2>
                 <p>Why not manage our dependencies ourselves? Not too hard to specify a central dependency map, surely?</p>
                 <p class="fragment">BBC Glow, Dojo (pre 1.7), ExtJS do it!</p>
                 <p class="fragment">What happens when you want to mix libraries or frameworks?</p>
                 <p class="fragment">Worst case: a module which depends on Framework X and Library Y simultaneously</p>
-                <p class="fragment">Painful!</p>
+                <p class="fragment">Combining loaders is painful (trust me)</p>
             </section>
 
-            <section>
+            <section data-background="#2aa198">
                 <h2>The New Boss&trade;</h2>
                 <h3>Standards! (Yay!)</h3>
                 <p class="fragment">Don't get your hopes up...</p>
             </section>
 
-            <section>
+            <section data-background="#2aa198">
                 <h2>ECMAScript Harmony (6th Edition)</h2>
                 <p>Packages and classes!</p>
                 <p class="fragment">Troubled development history going back to 2007</p>
@@ -125,7 +130,7 @@ var bazPlugin = new Foo.Bar.Baz.Plugin();
                 <p class="fragment">Release planned for end of 2013, long time to wait for good browser support anyway</p>
             </section>
 
-            <section>
+            <section data-background="#2aa198">
                 <h2>CommonJS</h2>
                 <p>Actually a full 'standard library' for JavaScript</p>
                 <p class="fragment">CommonJS Modules defines packaging and dependency management</p>
@@ -136,18 +141,19 @@ var bazPlugin = new Foo.Bar.Baz.Plugin();
             </section>
 
             <section>
-                <h2>AMD (Asynchronous Module Definition)</h2>
-                <p>Originally an interim proposal alongside CommonJS</p>
-                <p class="fragment">Defines packaging and dependency management</p>
-                <p class="fragment">define() and require() are the API - simple and semantic</p>
-                <p class="fragment">Numerous implementations exist: RequireJS, curl.js, Dojo 1.7+</p>
-                <p class="fragment">Alive and well!</p>
-            </section>
+                <section data-background="#2aa198">
+                    <h2>AMD (Asynchronous Module Definition)</h2>
+                    <p>Originally an interim proposal alongside CommonJS</p>
+                    <p class="fragment">Defines packaging and dependency management</p>
+                    <p class="fragment">define() and require() are the API - simple and semantic</p>
+                    <p class="fragment">Numerous implementations exist: RequireJS, curl.js, Dojo 1.7+</p>
+                    <p class="fragment">Alive and well!</p>
+                </section>
 
-            <section>
-                <h2>AMD: An Example</h2>
-                <p>First, we define our module</p>
-                <pre><code class="javascript" data-trim>
+                <section data-background="#2aa198">
+                    <h2>AMD: An Example</h2>
+                    <p>First, we define our module</p>
+                    <pre><code class="javascript" data-trim>
 define(
     'project/module/submodule',
     ['vendorA/dependency', 'vendorB/dependency'],
@@ -159,48 +165,48 @@ define(
         };
     }
 );
-                </code></pre>
-                <div class="fragment">
-                    <p>Now let's use it</p>
-                    <pre><code class="javascript" data-trim>
+                    </code></pre>
+                    <div class="fragment">
+                        <p>Now let's use it</p>
+                        <pre><code class="javascript" data-trim>
 require(
     'project/module/submodule',
     function(submodule) {
         ...
     }
 );
-                    </code></pre>
-                </div>
-                <p class="fragment">
-                    Pretty straightforward so far...
-                </p>
-            </section>
+                        </code></pre>
+                    </div>
+                    <p class="fragment">
+                        Pretty straightforward so far...
+                    </p>
+                </section>
 
-            <section>
-                <h2>AMD: Paths</h2>
-                <p>But where do we find those modules?</p>
-                <pre><code class="javascript" data-trim>
+                <section data-background="#2aa198">
+                    <h2>AMD: Paths</h2>
+                    <p>But where do we find those modules?</p>
+                    <pre><code class="javascript" data-trim>
 require.config({
     paths: [
         "vendorA": "http://cdn.vendora.com/js",
         ...
     ]
 });
-                </code></pre>
-                <div class="fragment">
-                    <p>So our modules are located like this</p>
-                    <pre><code class="no-highlight">
+                    </code></pre>
+                    <div class="fragment">
+                        <p>So our modules are located like this</p>
+                        <pre><code class="no-highlight">
 vendorA/moduleA       => http://cdn.vendora.com/js/moduleA.js
 vendorA/moduleB       => http://cdn.vendora.com/js/moduleB.js
 vendorA/moduleB/sub   => http://cdn.vendora.com/js/moduleB/sub.js
-                    </code></pre>
-                </div>
-            </section>
+                        </code></pre>
+                    </div>
+                </section>
 
-            <section>
-                <h2>AMD: Globals</h2>
-                <p>What about our old browser-global scripts, such as jQuery?</p>
-                <pre><code class="javascript" data-trim>
+                <section data-background="#2aa198">
+                    <h2>AMD: Globals</h2>
+                    <p>What about our old browser-global scripts, such as jQuery?</p>
+                    <pre><code class="javascript" data-trim>
 require.config({
     shim: {
         jquery: {
@@ -215,19 +221,44 @@ require.config({
         }
     }
 });
-                </code></pre>
-                <pre><code class="javascript" data-trim>
+                    </code></pre>
+                    <pre><code class="javascript" data-trim>
 require(["jquery"], function($) {
     ...
 });
-                </code></pre>
+                    </code></pre>
+                </section>
+            </section>
+
+            <section data-background="#cb4b16">
+                <h2>RequireJS</h2>
+                <p>The BBC's Chosen One</p>
+                <p class="fragment">Just an AMD loader</p>
+                <p class="fragment">Provides some compatibility with CommonJS-style modules</p>
+                <p class="fragment">Has a tool for optimisation (r.js): concatenation, ordering, minification</p>
+                <p class="fragment"></p>
+            </section>
+
+            <section data-background="#cb4b16">
+                <h2>BBC PAL</h2>
+                <p>RequireJS is loaded by Barlesque</p>
+                <p class="fragment">Default map of common modules such as jQuery and iStats</p>
+                <p class="fragment">Automatically generates maps of JavaScript modules in a PAL application</p>
+                <p class="fragment">Can include maps from other PAL applications so you can share modules</p>
             </section>
 
             <section>
-                <h2>RequireJS</h2>
-                <p>Simply an AMD loader</p>
-                <p class="fragment">Provides some compatibility with CommonJS-style modules</p>
-                <p class="fragment">The BBC's Chosen One</p>
+                <h2>Onto the code...</h2>
+            </section>
+
+            <section>
+                <h2>Sources</h2>
+                <p><a href="http://www.yuiblog.com/blog/2007/06/12/module-pattern/">A JavaScript Module Pattern (YUI)</a></p>
+                <p><a href="http://unscriptable.com/code/AMD-vs-CommonJS/">AMD vs CommonJS</a></p>
+                <p><a href="http://addyosmani.com/writing-modular-js/">Writing Modular JavaScript with AMD, CommonJS & ES Harmony</a></p>
+                <p><a href="https://github.com/amdjs/amdjs-api/wiki">AMD API specification</a></p>
+                <p><a href="http://requirejs.org/docs/whyamd.html">RequireJS: Why AMD?</a></p>
+                <p><a href="https://github.com/jrburke/r.js/">r.js command line tool</a></p>
             </section>
         </div>
     </div>
@@ -238,6 +269,7 @@ require(["jquery"], function($) {
     <script>
         Reveal.initialize({
             history: true,
+            backgroundTransition: "slide",
             transition: "linear",
             dependencies: [
                 { src: 'reveal/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
